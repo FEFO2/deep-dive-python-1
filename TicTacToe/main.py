@@ -12,8 +12,12 @@ def check(num):
         choice = int(num)
         if 1 <= choice <= 9:
             return True
-        else: return False
-    else: return False   
+        else:
+            print("Invalid option...") 
+            return False
+    else: 
+        print("Invalid option...")
+        return False   
 
 def new_game():
     global matrix, x_turn, o_turn
@@ -21,7 +25,9 @@ def new_game():
     x_turn, o_turn = 0, 0    
     return None
 
+
 def play(num):  
+    global x_turn, o_turn
     num = int(num)
     if x_turn == o_turn: # Aquí decide si juegan 'X' o 'O'
         if  1 <= num <= 3:
@@ -46,6 +52,24 @@ def play(num):
         print("Now plays X!")
     else: print("Now plays O!")    
 
+
+def check_for_winner():
+    win_options = [ [[1,0,0],[1,0,0],[1,0,0]],  # write all win positions
+                [[0,1,0],[0,1,0],[0,1,0]],
+                [[0,0,1],[0,0,1],[0,0,1]],
+                [[1,1,1],[0,0,0],[0,0,0]],
+                [[0,1,0],[0,1,0],[0,1,0]],
+                [[0,0,1],[0,0,1],[0,0,1]],
+                [[1,0,0],[0,1,0],[0,0,1]],
+                [[0,0,1],[0,1,0],[1,0,0]]]
+    check_x = [[1 if x == "X" else 0 for x in line] for line in matrix]
+    check_o = [[1 if x == "X" else 0 for x in line] for line in matrix]
+    for option in win_options:
+        if check_x == option:
+            print("Winner is X!")
+        if check_o == option:
+            print("Winner is O!")
+
 # ------------------------------------------------------
 
 welcome() # Welcome message
@@ -53,8 +77,10 @@ welcome() # Welcome message
 while True:
     # default settings
     new_game()
-    option = input("Choose your option: ")
-    if check(option):
-        play(option)
+    while check_for_winner() == None:
+        option = input("Choose your option from 1 to 9: ")
+        if check(option):
+            play(option)
+            check_for_winner()
 
     
