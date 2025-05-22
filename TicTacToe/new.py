@@ -1,9 +1,11 @@
 def new_game():
+    global x_turn, o_turn, x_nums, o_nums, matrix       
     matrix = [["" for _ in range(3)] for _ in range(3)]
     x_turn = 0
     o_turn = 0
     x_nums = []
     o_nums = []
+    return True
 
 def play(num):
     global x_turn, o_turn, x_nums, o_nums, matrix    
@@ -16,7 +18,7 @@ def play(num):
         print("\nInvalid option...")
         return False
     row = (choice -1) // 3
-    column = (choice -1) & 3
+    column = (choice -1) % 3
 
     if matrix[row][column] != "":
         print("\nOption already taken...")
@@ -46,3 +48,19 @@ def check_for_winner():
         if set(comb).issubset(set(o_nums)):
             print("\n O Has won the match!") 
             return True       
+    if len(x_nums) + len(o_nums) == 9:
+        print("\Its a TIE...")
+        return True
+
+# -------------------------------------------------
+
+while True:
+    new_game()
+    winner = None
+    while winner == None:
+        if x_turn == o_turn:
+            print("X plays:")
+        else: 
+            print("O plays:")
+        play(input("\nChoose a number between 1 and 9"))
+        check_for_winner()
